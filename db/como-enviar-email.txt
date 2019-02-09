@@ -1,17 +1,31 @@
-Mail mailDB = (Mail) dao.DAOEclipse.get(Mail.class, 1);
+@RequestMapping(value = "test")
+public void test()
+{
+	
+	// 1 - TRAER EL TIPO DE CORREO DE DB:
+	Correo mailDB = dameCorreoPorNombre("prueba");
+	
+	// 2 - LISTADO DE PARAMETROS NECESARIOS PARA EL CUERPO:
+	List<ParametroMail> parametrosList = new ArrayList<>();
+	
+	parametrosList.add(new ParametroMail("titulo", "Tienes una nueva reserva - (" ));
+	parametrosList.add(new ParametroMail("subtitulo","Querido "));
+	parametrosList.add(new ParametroMail("finSubtitulo"," te ganaste una pataada en el orto! "));
+	parametrosList.add(new ParametroMail("horario", "Consulta realizada:"));
+	parametrosList.add(new ParametroMail("usuario", "Roberto"));
+	parametrosList.add(new ParametroMail("hora", MasterController.formatearFechaAAlgoBonito(new Date(), true) + ") "));
+	parametrosList.add(new ParametroMail("foto", "https://o.aolcdn.com/images/dims3/GLOB/legacy_thumbnail/630x315/format/jpg/quality/85/http%3A%2F%2Fi.huffpost.com%2Fgen%2F2714370%2Fimages%2Fn-POOP-EMOJI-ICE-CREAM-628x314.jpg"));
+	parametrosList.add(new ParametroMail("enlaceFoto", "https://web.whatsapp.com/"));
+   
+	// 3 - METER ETIQUETAS ANGULAR EN ARCHIVO HTML:
+	MailManager mailManager = new MailManager(mailDB.getRemitente(), mailDB.getPassRemitente());
+	
+	// 4 - ENVIAR EMAIL:
+	mailManager.enviarEmail(mailDB, parametrosList);
+	
+}
 
-// ENVIAR EMAIL:
-List<String> destinatarios = new ArrayList<>();
-destinatarios.add("nico.grossi4@gmail.com");
 
-// 3 - CONVERTIME EL ARCHIVO HTML CON ETIQUETAS ANGULAR CON LOS VALORES QUE YO NECESITO:
-List<ParametroMail> parametrosMailList = new ArrayList<>();
 
-List<ParametroMail> parametrosList = new ArrayList<>();
-parametrosList.add(new ParametroMail("titulo", "Tienes una nueva reserva - ()" ));
-parametrosList.add(new ParametroMail("subtitulo","dd"));
-parametrosList.add(new ParametroMail("horario", "Consulta realizada:"));
-parametrosList.add(new ParametroMail("hora", new Date().toString()));
 
-MailManager mailManager = new MailManager(mailDB.getRemitente(), mailDB.getPassRemitente());
-mailManager.enviarEmail(mailDB, destinatarios, parametrosList);
+------

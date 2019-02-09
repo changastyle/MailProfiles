@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 public class wsCorreos
 {
-    @RequestMapping(value = "howTO")
-    public void howTO()
+    @RequestMapping(value = "test")
+    public void test()
     {
         
         // 1 - TRAER EL TIPO DE CORREO DE DB:
