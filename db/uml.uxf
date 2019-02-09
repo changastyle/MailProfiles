@@ -4,20 +4,82 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>450</x>
-      <y>390</y>
-      <w>210</w>
+      <x>140</x>
+      <y>380</y>
+      <w>350</w>
       <h>210</h>
     </coordinates>
-    <panel_attributes>Mail
-@Table("mails")
+    <panel_attributes>Correo
+@Table("correos")
 --
 int id;
-String urlTemplate; 
+String nombre;
 String remitente;
 String aliasRemitente; 
 String passRemitente;
-String asunto;</panel_attributes>
+String asunto;
+String urlTemplate; 
+
+List&lt;RelCorreoDestinatario&gt; relDestinatariosList;
+</panel_attributes>
     <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1030</x>
+      <y>380</y>
+      <w>210</w>
+      <h>210</h>
+    </coordinates>
+    <panel_attributes>Destinatario
+@Table("destinatarios")
+--
+int id;
+String nombre;
+String direccion;</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>580</x>
+      <y>380</y>
+      <w>320</w>
+      <h>210</h>
+    </coordinates>
+    <panel_attributes>RelCorreoDestinatario
+@Table("relacionesCorreoDestinatario")
+--
+@Id @GeneratedValue(strategy="identity")
+int id;
+@OneToOne() @JoinColumn("fkCorreo")
+Correo correo;
+@OneToOne() @JoinColumn("fkDestinatario")
+Destinatario destinatario;
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>480</x>
+      <y>490</y>
+      <w>120</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;100.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>890</x>
+      <y>480</y>
+      <w>160</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;20.0;140.0;20.0</additional_attributes>
   </element>
 </diagram>

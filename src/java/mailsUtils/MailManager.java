@@ -19,7 +19,8 @@ import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.*;
-import modelo.Mail;
+import modelo.Correo;
+import modelo.Destinatario;
 
 public class MailManager 
 {
@@ -71,7 +72,24 @@ public class MailManager
         return mensajePreparado;
     }
 
-    public void sendMail(String usuarioRemitenteEmail , String passRemitente, String aliasRemitente, String asunto, String cuerpo , List<String> destinatarios ) 
+    
+    public static void enviarEmail
+    (
+        Correo correo,
+        List<ParametroMail> arrParametros
+    )
+    {
+       // 5 - GENERO UN HTML POPULADO CON ESTA INFORMACION:
+       List<String> htmlSinValoresList = HtmlParserForMails.testHTMLAutocompletar(correo.getUrlTemplate(), arrParametros);
+       String htmlFinal = HtmlParserForMails.dameHtmlAsStringFromList(htmlSinValoresList);
+
+       // 6 - FINALMENTE ENVIO EL MAIL:
+       System.out.println("ENVIO EL MAIL!!");
+       MailManager mailManager = new MailManager(correo.getRemitente() , correo.getPassRemitente() );
+       mailManager.sendMail(correo.getRemitente(), correo.getPassRemitente(), correo.getAliasRemitente(), correo.getAsunto(), htmlFinal, correo.dameListadoEnStringDeLosDestinatarios());
+    }
+    
+    private void sendMail(String usuarioRemitenteEmail , String passRemitente, String aliasRemitente, String asunto, String cuerpo , List<String> destinatarios ) 
     {
         if (session == null) 
         {
@@ -116,22 +134,6 @@ public class MailManager
             e.printStackTrace();
             System.out.println("EMAIL NO ENVIADO");
         }
-    }
-    public static void enviarEmail
-    (
-        Mail mail,
-        List<String> arrDestinatarios,
-        List<ParametroMail> arrParametros
-    )
-    {
-       // 5 - GENERO UN HTML POPULADO CON ESTA INFORMACION:
-       List<String> htmlSinValoresList = HtmlParserForMails.testHTMLAutocompletar(mail.getUrlTemplate(), arrParametros);
-       String htmlFinal = HtmlParserForMails.dameHtmlAsStringFromList(htmlSinValoresList);
-
-       // 6 - FINALMENTE ENVIO EL MAIL:
-       System.out.println("ENVIO EL MAIL!!");
-       MailManager mailManager = new MailManager(mail.getRemitente() , mail.getPassRemitente() );
-       mailManager.sendMail(mail.getRemitente(), mail.getPassRemitente(), mail.getAliasRemitente(), mail.getAsunto(), htmlFinal, arrDestinatarios);
     }
 
 }

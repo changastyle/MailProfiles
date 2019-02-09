@@ -4,33 +4,41 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.*;
 import javax.persistence.*;
 
-@Entity @Table(name = "mails")
-public class Mail implements Comparable<Mail>
+@Entity @Table(name = "correos")
+public class Correo implements Comparable<Correo>
 {
     //ATRIBUTOS:
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+    private String nombre;
     private String aliasRemitente;
     private String asunto;
     @JsonIgnore
     private String passRemitente;
     private String remitente;
     private String urlTemplate;
+    @OneToMany(mappedBy = "correo")
+    private List<RelCorreoDestinatario> relDestinatariosList;
+    
     
     
     //CONTRUCTOR VACIO:
-    public Mail() 
+    public Correo() 
     {
+        relDestinatariosList = new ArrayList<>();
     }
     
     //CONTRUCTOR PARAMETROS SIN LISTAS:
-    public Mail(String aliasRemitente,String asunto,String passRemitente,String remitente,String urlTemplate)
+    public Correo(String aliasRemitente,String asunto,String passRemitente,String remitente,String urlTemplate)
     {
         this.aliasRemitente = aliasRemitente;
         this.asunto = asunto;
         this.passRemitente = passRemitente;
         this.remitente = remitente;
         this.urlTemplate = urlTemplate;
+        
+        
+        relDestinatariosList = new ArrayList<>();
     }
 
 
@@ -60,6 +68,23 @@ public class Mail implements Comparable<Mail>
         return urlTemplate;
     }
 
+    public String getNombre()
+    {
+        return nombre;
+    }
+
+    public List<RelCorreoDestinatario> getRelDestinatariosList()
+    {
+        return relDestinatariosList;
+    }
+
+    public void setRelDestinatariosList(List<RelCorreoDestinatario> relDestinatariosList)
+    {
+        this.relDestinatariosList = relDestinatariosList;
+    }
+    
+    
+
     //SET
     public void setId( int id ) 
     {
@@ -85,6 +110,13 @@ public class Mail implements Comparable<Mail>
     {
         this.urlTemplate = urlTemplate;
     }
+
+    public void setNombre(String nombre)
+    {
+        this.nombre = nombre;
+    }
+    
+    
     //</editor-fold>
     
     //@Override
@@ -109,9 +141,20 @@ public class Mail implements Comparable<Mail>
     //DYN:
 
     
-    public int compareTo(Mail otro)
+    public int compareTo(Correo otro)
     {
         return 1;
+    }
+    public List<String> dameListadoEnStringDeLosDestinatarios()
+    {
+        List<String> arrStr = new ArrayList<String>();
+        
+        for(RelCorreoDestinatario relLoop : relDestinatariosList)
+        {
+            arrStr.add(relLoop.getDestinatario().getDireccion());
+        }
+        
+        return arrStr;
     }
     
 }

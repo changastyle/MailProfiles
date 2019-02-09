@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import mailsUtils.HtmlParserForMails;
 import mailsUtils.MailManager;
 import mailsUtils.ParametroMail;
-import modelo.Mail;
+import modelo.Correo;
 
 public class Main
 {
