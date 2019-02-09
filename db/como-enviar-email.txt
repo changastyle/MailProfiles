@@ -1,0 +1,17 @@
+Mail mailDB = (Mail) dao.DAOEclipse.get(Mail.class, 1);
+
+// ENVIAR EMAIL:
+List<String> destinatarios = new ArrayList<>();
+destinatarios.add("nico.grossi4@gmail.com");
+
+// 3 - CONVERTIME EL ARCHIVO HTML CON ETIQUETAS ANGULAR CON LOS VALORES QUE YO NECESITO:
+List<ParametroMail> parametrosMailList = new ArrayList<>();
+
+List<ParametroMail> parametrosList = new ArrayList<>();
+parametrosList.add(new ParametroMail("titulo", "Tienes una nueva reserva - ()" ));
+parametrosList.add(new ParametroMail("subtitulo","dd"));
+parametrosList.add(new ParametroMail("horario", "Consulta realizada:"));
+parametrosList.add(new ParametroMail("hora", new Date().toString()));
+
+MailManager mailManager = new MailManager(mailDB.getRemitente(), mailDB.getPassRemitente());
+mailManager.enviarEmail(mailDB, destinatarios, parametrosList);
